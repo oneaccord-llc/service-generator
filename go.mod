@@ -1,4 +1,4 @@
-module oneaccord.cc/service-generator
+module github.com/oneaccord-llc/service-generator
 
 go 1.22.0
 

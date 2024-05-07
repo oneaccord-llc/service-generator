@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	gen "oneaccord.cc/service-generator/generator"
+	gen "github.com/oneaccord-llc/service-generator/generator"
 )
 
 //go:embed templates/*

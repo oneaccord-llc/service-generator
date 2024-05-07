@@ -3,7 +3,7 @@
 To create a new service, first
 
 ```
-go install https://github.com/oneaccord-llc/service-generator
+go install github.com/oneaccord-llc/service-generator@latest
 ```
 
 then run
