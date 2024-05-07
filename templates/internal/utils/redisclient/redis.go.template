@@ -1,0 +1,46 @@
+package redisclient
+
+import (
+	"context"
+	"log"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+
+	"oneaccord.cc/<PROJECT_NAME>/config"
+)
+
+var client *redis.Client
+
+func RedisConnect() {
+	client = redis.NewClient(&redis.Options{
+		Addr:     config.Env.RedisURL,
+		Password: config.Env.RedisPassword,
+		DB:       0,
+	})
+
+	if err := client.Ping(context.Background()).Err(); err != nil {
+		log.Fatalln("Error connecting to redis: ", err)
+	} else {
+		log.Println("Redis Connection Successful")
+	}
+}
+
+func Get(ctx context.Context, key string) string {
+	val, err := client.Get(ctx, key).Result()
+	if err != nil {
+		log.Println("Err Getting value", err)
+		return ""
+	}
+	return val
+}
+
+func Set(ctx context.Context, key string, value interface{}, exp time.Duration) {
+	e := client.Set(ctx, key, value, exp).Err()
+	if e != nil {
+		log.Println("Error setting value", e)
+	}
+	if e == redis.Nil {
+		log.Println("Value not found")
+	}
+}

@@ -1,0 +1,11 @@
+package helpers
+
+import "github.com/labstack/echo/v4"
+
+func QueryParam(e echo.Context, key, defaultVal string) string {
+	value := e.QueryParam(key)
+	if value == "" {
+		return defaultVal
+	}
+	return value
+}

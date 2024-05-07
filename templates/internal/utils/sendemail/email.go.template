@@ -1,0 +1,31 @@
+package sendemail
+
+import (
+	"context"
+
+	"oneaccord.cc/<PROJECT_NAME>/config"
+
+	"go.uber.org/zap"
+	mq "oneaccord.cc/pkg/rbmq"
+)
+
+// NOTE: the topic here should match to topic on email-service
+const (
+	CHURCH_CREATE_TOPIC string = "email_church_create"
+)
+
+func SendMail(topic string, body []byte) {
+	mqUrl := config.Env.RabbitMQUrl
+
+	p, err := mq.NewProducer(mqUrl)
+	if err != nil {
+		zap.L().Error("Err sending email: ", zap.Error(err))
+		return
+	}
+
+	err = p.Produce(context.TODO(), topic, body)
+	if err != nil {
+		zap.L().Error("Err sending email: ", zap.Error(err))
+		return
+	}
+}

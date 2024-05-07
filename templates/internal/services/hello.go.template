@@ -1,0 +1,29 @@
+package services
+
+import (
+  "context"
+
+	"oneaccord.cc/<PROJECT_NAME>/config"
+	"oneaccord.cc/<PROJECT_NAME>/internal/database"
+	"oneaccord.cc/<PROJECT_NAME>/internal/models"
+	. "oneaccord.cc/<PROJECT_NAME>/internal/types"
+	helpers "oneaccord.cc/<PROJECT_NAME>/internal/utils/helper"
+)
+
+type Service struct {
+	q   *models.Queries
+	db  *pgxpool.Pool
+	log *zap.Logger
+}
+
+func NewService() *Service {
+	return &Service{
+		q:   models.New(db.Client),
+		db:  db.Client,
+		log: zap.L(),
+	}
+}
+
+func (svc *Service) HelloWorld(ctx context.Context) (HelloResponse,error) {
+  return HelloResponse{Message: "Hello World"}, nil
+}

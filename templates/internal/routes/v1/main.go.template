@@ -1,0 +1,7 @@
+import (
+	"github.com/labstack/echo/v4"
+)
+
+func Load(router *echo.Group) {
+	LoadHelloRoutes(router.Group("/hello"))
+}

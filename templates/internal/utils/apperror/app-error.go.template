@@ -1,0 +1,88 @@
+package apperror
+
+import (
+	"errors"
+	"net/http"
+
+	"github.com/jackc/pgerrcode"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/labstack/echo/v4"
+)
+
+var RecordNotFound = errors.New("Record not found")
+
+type FailedResponse struct {
+	Success bool `json:"success"`
+	Message any  `json:"message"`
+}
+
+/*
+Custom centralized echo framework error handler to handle errors and return a proper HTTP error response
+*/
+func CustomErrorHandler(err error, c echo.Context) {
+	var e *echo.HTTPError
+	if ok := errors.As(err, &e); !ok {
+		e = echo.NewHTTPError(http.StatusInternalServerError)
+	}
+	res := FailedResponse{
+		Success: false,
+		Message: e.Message,
+	}
+	c.JSON(e.Code, res)
+}
+
+/*
+Utility Error function to handle different types of errors and return a proper HTTP error response
+For more information related on SQL errors, visit https://github.com/jackc/pgerrcode/blob/master/errcode.go
+Append additional cases as needed
+*/
+func ErrorResponse(err error, errorsMsg ...interface{}) *echo.HTTPError {
+	// case when there are no records
+	if err == pgx.ErrNoRows {
+		return echo.NewHTTPError(http.StatusNotFound, "Record not found")
+	}
+
+	// Handle SQL related errors here
+	// Additional SQL cases
+	var pgErr *pgconn.PgError
+
+	if errors.As(err, &pgErr) {
+		switch pgErr.Code {
+		case pgerrcode.UniqueViolation:
+			return echo.NewHTTPError(http.StatusBadRequest, "Duplicate record")
+		default:
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+	}
+	// End of SQL related errors
+
+	var statusCode int
+	var message string
+
+	for _, msg := range errorsMsg {
+		switch arg := msg.(type) {
+		case int:
+			statusCode = arg
+		case string:
+			message = arg
+		}
+	}
+
+	// If there is a status code and message
+	if statusCode != 0 && message != "" {
+		return echo.NewHTTPError(statusCode, message)
+	}
+
+	// If there is a status code
+	if statusCode != 0 {
+		return echo.NewHTTPError(statusCode, err.Error())
+	}
+
+	// If there is a message
+	if message != "" {
+		return echo.NewHTTPError(http.StatusBadRequest, message)
+	}
+
+	return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+}

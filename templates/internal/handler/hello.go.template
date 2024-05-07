@@ -1,0 +1,35 @@
+package handlers
+
+import (
+	"context"
+	"net/http"
+
+	"oneaccord.cc/<PROJECT_NAME>/internal/models"
+	service "oneaccord.cc/<PROJECT_NAME>/internal/services"
+	. "oneaccord.cc/<PROJECT_NAME>/internal/types"
+	"oneaccord.cc/<PROJECT_NAME>/internal/utils/apperror"
+	helpers "oneaccord.cc/<PROJECT_NAME>/internal/utils/helper"
+	"oneaccord.cc/<PROJECT_NAME>/internal/utils/responder"
+)
+
+type Handler struct {
+	svc *service.Service
+	log *zap.Logger
+}
+
+func NewHandler() *Handler {
+	return &Handler{
+		log: zap.L(),
+		svc: service.NewService(),
+	}
+}
+
+func (hnd *Handler) GetHello(e echo.Context) error {
+  ctx := c.Request().Context()
+  hello, err := hnd.svc.HelloWorld(ctx)
+  if err != nil {
+  return apperror.ErrorResponse(err)
+  }
+
+  return responder.JSONResponse(e, hello, http.StatusOK)
+}

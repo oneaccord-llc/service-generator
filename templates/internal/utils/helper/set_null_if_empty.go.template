@@ -1,0 +1,21 @@
+package helpers
+
+import "reflect"
+
+// CheckAndSetNilIfEmpty checks if the string value is empty and sets it to nil
+// Only sets the field to nil if the field is a pointer to a string
+func CheckAndSetNilIfEmpty(obj interface{}) {
+	val := reflect.ValueOf(obj).Elem()
+
+	for i := 0; i < val.NumField(); i++ {
+		fieldVal := val.Field(i)
+		if fieldVal.Kind() == reflect.Ptr && fieldVal.Type().Elem().Kind() == reflect.String {
+			if !fieldVal.IsNil() && fieldVal.Elem().Kind() == reflect.String {
+				str := fieldVal.Elem().Interface().(string)
+				if str == "" {
+					fieldVal.Set(reflect.Zero(fieldVal.Type()))
+				}
+			}
+		}
+	}
+}

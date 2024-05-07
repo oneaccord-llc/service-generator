@@ -1,0 +1,30 @@
+package db
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/jackc/pgx/v5/pgxpool"
+
+	"oneaccord.cc/<PROJECT_NAME>/config"
+)
+
+var Client *pgxpool.Pool
+
+func OpenDB() (*pgxpool.Pool, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	pool, err := pgxpool.New(ctx, config.Env.PostgresqlUrl)
+	if err != nil {
+		return nil, fmt.Errorf("database error: %w ", err)
+	}
+
+	pool.Config().MaxConns = 10
+	pool.Config().MaxConnIdleTime = 30 * time.Second
+
+	Client = pool
+
+	return Client, nil
+}

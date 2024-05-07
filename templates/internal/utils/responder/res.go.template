@@ -1,0 +1,41 @@
+package responder
+
+import (
+	"github.com/labstack/echo/v4"
+)
+
+type SuccessResponse struct {
+	Success bool        `json:"success"`
+	Payload interface{} `json:"payload"`
+}
+
+type failureResponse struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+type failureResponseWithPayload struct {
+	Success bool        `json:"success"`
+	Payload interface{} `json:"payload"`
+}
+
+func JSONResponse(c echo.Context, payload interface{}, code int) error {
+	return c.JSON(code, SuccessResponse{
+		Success: true,
+		Payload: payload,
+	})
+}
+
+func JSONFailureResponse(c echo.Context, message string, code int) error {
+	return c.JSON(code, failureResponse{
+		Success: false,
+		Message: message,
+	})
+}
+
+func JSONFailureResponseWithPayload(c echo.Context, payload interface{}, code int) error {
+	return c.JSON(code, failureResponseWithPayload{
+		Success: false,
+		Payload: payload,
+	})
+}
