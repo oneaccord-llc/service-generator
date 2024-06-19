@@ -1,0 +1,10 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE hello (
+ id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+ name text NOT NULL
+);
+
+---- create above / drop below ----
+
+DROP TABLE hello;

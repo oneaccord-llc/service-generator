@@ -1,0 +1,30 @@
+package helpers
+
+import "encoding/json"
+
+// MapStruct maps fields from the source struct to the destination struct
+// using JSON serialization and deserialization. Both src and dest must
+// be pointers to structs, and the struct fields should be annotated with
+// JSON tags to ensure proper mapping.
+//
+// Parameters:
+//   - src: A pointer to the source struct
+//   - dest: A pointer to the destination struct
+//
+// Returns:
+//   - error: An error if there is a problem during the mapping process
+func MapStruct(src interface{}, dest interface{}) error {
+	// Convert src to []byte
+	srcBytes, err := json.Marshal(src)
+	if err != nil {
+		return err
+	}
+
+	// Convert []byte to dest
+	err = json.Unmarshal(srcBytes, dest)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

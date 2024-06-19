@@ -3,11 +3,12 @@ package services
 import (
   "context"
 
-	"oneaccord.cc/<PROJECT_NAME>/config"
+	"github.com/jackc/pgx/v5/pgxpool"
+	"go.uber.org/zap"
+	db "oneaccord.cc/<PROJECT_NAME>/internal/database"
 	"oneaccord.cc/<PROJECT_NAME>/internal/database"
 	"oneaccord.cc/<PROJECT_NAME>/internal/models"
 	. "oneaccord.cc/<PROJECT_NAME>/internal/types"
-	helpers "oneaccord.cc/<PROJECT_NAME>/internal/utils/helper"
 )
 
 type Service struct {

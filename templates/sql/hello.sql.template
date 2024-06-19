@@ -1,0 +1,2 @@
+-- name: GetHello :many
+SELECT * FROM hello;

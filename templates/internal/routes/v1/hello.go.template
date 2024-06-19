@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func LoadRoutes(router *echo.Group) {
+func LoadHelloRoutes(router *echo.Group) {
 	handler := hnd.NewHandler()
 
 	router.GET("", handler.GetHello)                      // GET / - Get website by user ID (x-user-id header)

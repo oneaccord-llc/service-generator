@@ -43,20 +43,6 @@ func ErrorResponse(err error, errorsMsg ...interface{}) *echo.HTTPError {
 		return echo.NewHTTPError(http.StatusNotFound, "Record not found")
 	}
 
-	// Handle SQL related errors here
-	// Additional SQL cases
-	var pgErr *pgconn.PgError
-
-	if errors.As(err, &pgErr) {
-		switch pgErr.Code {
-		case pgerrcode.UniqueViolation:
-			return echo.NewHTTPError(http.StatusBadRequest, "Duplicate record")
-		default:
-			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-		}
-	}
-	// End of SQL related errors
-
 	var statusCode int
 	var message string
 
@@ -83,6 +69,21 @@ func ErrorResponse(err error, errorsMsg ...interface{}) *echo.HTTPError {
 	if message != "" {
 		return echo.NewHTTPError(http.StatusBadRequest, message)
 	}
+
+	// Handle SQL related errors here
+	// Additional SQL cases
+	var pgErr *pgconn.PgError
+
+	if errors.As(err, &pgErr) {
+		switch pgErr.Code {
+		case pgerrcode.UniqueViolation:
+			return echo.NewHTTPError(http.StatusBadRequest, "Duplicate record")
+		default:
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+	}
+	// End of SQL related errors
+
 
 	return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 }

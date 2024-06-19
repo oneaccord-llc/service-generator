@@ -34,13 +34,6 @@ func (g *Generator) Generate(templatesFS embed.FS) error {
 		return err
 	}
 
-	if err := os.MkdirAll(filepath.Join(g.ProjectName, "migrations"), 0755); err != nil {
-		return err
-	}
-	if err := os.MkdirAll(filepath.Join(g.ProjectName, "sql"), 0755); err != nil {
-		return err
-	}
-
 	// Walk through the embedded filesystem and copy files to the destination
 	if err := fs.WalkDir(fsys, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
