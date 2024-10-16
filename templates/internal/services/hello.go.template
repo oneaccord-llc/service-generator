@@ -6,7 +6,6 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"go.uber.org/zap"
 	db "oneaccord.cc/<PROJECT_NAME>/internal/database"
-	"oneaccord.cc/<PROJECT_NAME>/internal/database"
 	"oneaccord.cc/<PROJECT_NAME>/internal/models"
 	. "oneaccord.cc/<PROJECT_NAME>/internal/types"
 )

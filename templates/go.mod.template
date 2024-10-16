@@ -10,6 +10,12 @@ replace oneaccord.cc/pkg/injectcontext => ../pkg/injectcontext
 
 replace oneaccord.cc/pkg/migrator => ../pkg/migrator
 
+replace oneaccord.cc/pkg/cronjobs => ../pkg/cronjobs
+
+replace oneaccord.cc/pkg/authorization => ../pkg/authorization
+
+replace oneaccord.cc/pkg/notification => ../pkg/notification
+
 require (
 	github.com/google/uuid v1.5.0
 	github.com/jackc/pgerrcode v0.0.0-20240316143900-6e2875d9b438

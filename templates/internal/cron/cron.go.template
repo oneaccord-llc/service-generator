@@ -1,0 +1,28 @@
+package cron
+
+// import (
+// "context"
+// "time"
+//
+// "go.uber.org/zap"
+// "oneaccord.cc/pkg/cronjobs"
+// )
+
+type CronJob struct{}
+
+func StartCronJobs() {
+	// INFO: Uncomment the below code of line
+
+	// cronJob := CronJob{}
+	//
+	// manager := cronjobs.NewCronManager()
+
+	/*
+		########################################################################################
+		#                          Add all cron jobs Below
+		########################################################################################
+	*/
+	// manager.AddJob("ExampleCron", 3*time.Minute, cronJob.ExampleCronFunction)
+	//
+	// manager.Start()
+}

@@ -9,5 +9,5 @@ import (
 func LoadHelloRoutes(router *echo.Group) {
 	handler := hnd.NewHandler()
 
-	router.GET("", handler.GetHello)                      // GET / - Get website by user ID (x-user-id header)
+	router.GET("", handler.GetHello)   
 }

@@ -13,12 +13,16 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"go.uber.org/zap"
 	"oneaccord.cc/pkg/migrator"
+	"oneaccord.cc/pkg/injectcontext"
 
 	"oneaccord.cc/<PROJECT_NAME>/config"
 	"oneaccord.cc/<PROJECT_NAME>/internal/database"
 	"oneaccord.cc/<PROJECT_NAME>/internal/routes/v1"
 	"oneaccord.cc/<PROJECT_NAME>/internal/utils/apperror"
+	// INFO: Uncomment below import to use cron
+	// "oneaccord.cc/<PROJECT_NAME>/internal/cron"
 	"oneaccord.cc/<PROJECT_NAME>/internal/utils/redisclient"
+	middlewares "oneaccord.cc/<PROJECT_NAME>/internal/middlewares"
 )
 
 // we embed migrations folder to the binary using go build in embed
@@ -69,9 +73,11 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Use(middleware.RequestID())
 	e.Use(middleware.Secure())
-	e.Use(middleware.TimeoutWithConfig(middleware.TimeoutConfig{
-		Timeout: 10 * time.Second,
-	}))
+	e.Use(middlewares.ContextTimeout)
+	e.Use(echo.WrapMiddleware(injectcontext.InjectHeadersIntoContext))
+
+	// INFO: Uncomment below line if you want to use cron jobs
+	// go cron.StartCronJobs()
 
 	// Health Check
 	e.GET("/", func(c echo.Context) error {
