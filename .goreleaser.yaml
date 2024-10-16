@@ -1,7 +1,7 @@
 version: 2
 
 builds:
-  - binary: service-generator
+  - binary: oneaccord-generator
     goos:
       - windows
       - darwin
@@ -20,9 +20,3 @@ release:
 
 universal_binaries:
   - replace: true
-
-brews:
-  - name: service-generator
-    homepage: https://github.com/oneaccord-llc/service-generator
-    commit_author:
-      name: ONEaccord
