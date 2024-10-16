@@ -3,13 +3,13 @@
 To create a new service, first
 
 ```
-go install github.com/oneaccord-llc/service-generator@latest
+go install github.com/oneaccord-llc/service-generator@v0.2.0
 ```
 
 then run
 
 ```
-oneaccord-generator
+service-generator
 ```
 
 Enter the name of the service
@@ -20,6 +20,8 @@ and run
 ```
 go mod tidy
 ```
+
+copy `.env.example` to `.env` file and add required variables
 
 The service is now ready, you can add/edit migrations and sql queries from `migrations/` and `sql/` directories.  
 Add routes inside `routes/` folder
